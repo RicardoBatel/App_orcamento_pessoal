@@ -106,7 +106,7 @@ class Bd {
             despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor)
         }
 
-        console.log(despesasFiltradas)
+        return despesasFiltradas
     }
 }
 
@@ -155,14 +155,17 @@ function cadastrarDespesa() {
     
 }
 
-function carregaListaDespesas() {
+function carregaListaDespesas(despesas = Array(), filtro = false) {
 
-    let despesas = Array()
-
-    despesas = bd.recuperarTodosRegistros()
+    if(despesas.length == 0 && filtro == false) {
+        despesas = bd.recuperarTodosRegistros()
+    }
     
     //selecionando o elemento tbody da tabela
     let listaDespesas = document.getElementById('listaDespesas')
+
+    //limpar tbody
+    listaDespesas.innerHTML = ''
 
     /*
     <tr>
@@ -214,5 +217,7 @@ function pesquisarDespesa() {
 
     let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor)
 
-    bd.pesquisar(despesa)
+    let despesas = bd.pesquisar(despesa)
+
+    carregaListaDespesas(despesas, true)
 }
